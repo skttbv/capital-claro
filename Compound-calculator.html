@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capital Claro | Calculadora de Interés Compuesto</title>
+    <meta name="description" content="Capital Claro es una calculadora de interes compuesto en espanol e ingles para proyectar capital, aportaciones recurrentes, intereses y balance final en EUR, USD o GBP.">
+    <meta name="keywords" content="calculadora interes compuesto, compound interest calculator, inversion, aportaciones recurrentes, proyeccion financiera, EUR, USD, GBP">
+    <meta name="author" content="Capital Claro">
+    <meta name="robots" content="index, follow">
+    <meta name="application-name" content="Capital Claro">
+    <meta name="theme-color" content="#11100d" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f5f1e8" media="(prefers-color-scheme: light)">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Capital Claro">
+    <meta property="og:title" content="Capital Claro | Calculadora de Interes Compuesto">
+    <meta property="og:description" content="Calcula el crecimiento de una inversion con interes compuesto, aportaciones recurrentes, divisa seleccionable y modo claro/oscuro.">
+    <meta property="og:locale" content="es_ES">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:image" content="favicon.svg">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Capital Claro | Compound Interest Calculator">
+    <meta name="twitter:description" content="Project compound growth with recurring contributions, selectable currency and bilingual Spanish/English interface.">
+    <meta name="twitter:image" content="favicon.svg">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Capital Claro",
+            "alternateName": "Capital Claro Compound Interest Calculator",
+            "applicationCategory": "FinanceApplication",
+            "operatingSystem": "Any",
+            "inLanguage": ["es", "en"],
+            "description": "Calculadora bilingue de interes compuesto para proyectar capital, aportaciones recurrentes, intereses y balance final en EUR, USD o GBP.",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "EUR"
+            },
+            "featureList": [
+                "Calculo de interes compuesto",
+                "Aportaciones recurrentes",
+                "Seleccion de divisa EUR, USD y GBP",
+                "Interfaz en espanol e ingles",
+                "Modo claro y oscuro",
+                "Exportacion CSV"
+            ]
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #11100d;
+            --bg-2: #171511;
+            --tint: 255, 252, 242;
+            --control-bg: rgba(17, 16, 13, 0.5);
+            --control-bg-hover: rgba(17, 16, 13, 0.64);
+            --header-bg: rgba(17, 16, 13, 0.78);
+            --header-border: rgba(255, 252, 242, 0.08);
+            --grid-a: rgba(255, 255, 255, 0.025);
+            --grid-b: rgba(255, 255, 255, 0.018);
+            --surface: rgba(255, 252, 242, 0.08);
+            --surface-strong: rgba(255, 252, 242, 0.12);
+            --surface-soft: rgba(255, 252, 242, 0.05);
+            --border: rgba(255, 252, 242, 0.16);
+            --border-strong: rgba(255, 252, 242, 0.26);
+            --text: #f8f3e7;
+            --muted: #b9b09f;
+            --muted-2: #8f8778;
+            --gold: #d6a84f;
+            --gold-strong: #f1c76a;
+            --green: #83c17d;
+            --green-strong: #a8d8a3;
+            --green-text: #acd4a7;
+            --red: #e26d63;
+            --ink: #11100d;
+            --radius: 8px;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+            --focus: 0 0 0 3px rgba(214, 168, 79, 0.32);
+        }
+        html[data-theme="light"] {
+            color-scheme: light;
+            --bg: #f5f1e8;
+            --bg-2: #ebe4d5;
+            --tint: 45, 38, 27;
+            --control-bg: rgba(255, 252, 244, 0.72);
+            --control-bg-hover: rgba(255, 252, 244, 0.92);
+            --header-bg: rgba(245, 241, 232, 0.82);
+            --header-border: rgba(45, 38, 27, 0.1);
+            --grid-a: rgba(45, 38, 27, 0.045);
+            --grid-b: rgba(45, 38, 27, 0.032);
+            --surface: rgba(255, 252, 244, 0.74);
+            --surface-strong: rgba(255, 252, 244, 0.92);
+            --surface-soft: rgba(45, 38, 27, 0.045);
+            --border: rgba(45, 38, 27, 0.14);
+            --border-strong: rgba(45, 38, 27, 0.24);
+            --text: #211c14;
+            --muted: #635845;
+            --muted-2: #877b67;
+            --gold: #b77c22;
+            --gold-strong: #8f5d14;
+            --green: #327a35;
+            --green-strong: #327a35;
+            --green-text: #327a35;
+            --red: #b94f44;
+            --ink: #fffaf0;
+            --shadow: 0 8px 24px rgba(66, 50, 21, 0.12);
+            --focus: 0 0 0 3px rgba(183, 124, 34, 0.24);
+        }
+        * {
+            box-sizing: border-box;
+        }
+        html {
+            color-scheme: dark;
+        }
+        body {
+            margin: 0;
+            min-height: 100dvh;
+            background:
+                linear-gradient(var(--grid-a) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-b) 1px, transparent 1px),
+                var(--bg);
+            background-size: 44px 44px;
+            color: var(--text);
+            font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+            font-size: 16px;
+            letter-spacing: 0;
+        }
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+        button {
+            min-height: 44px;
+            border: 0;
+            cursor: pointer;
+        }
+        button:focus-visible,
+        input:focus-visible,
+        select:focus-visible {
+            outline: none;
+            box-shadow: var(--focus);
+        }
+        .app-shell {
+            width: min(1480px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 18px 0 36px;
+            overflow-x: clip;
+        }
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            min-height: 72px;
+            margin-bottom: 18px;
+            padding: 12px 0;
+            background: var(--header-bg);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--header-border);
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+        .brand-mark {
+            display: grid;
+            place-items: center;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border-strong);
+            border-radius: var(--radius);
+            background: rgba(214, 168, 79, 0.09);
+            overflow: hidden;
+        }
+        .brand-mark img {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .brand-mark-light {
+            display: none;
+        }
+        html[data-theme="light"] .brand-mark-dark {
+            display: none;
+        }
+        html[data-theme="light"] .brand-mark-light {
+            display: block;
+        }
+        .brand h1 {
+            margin: 0;
+            font-size: 1.05rem;
+            line-height: 1.2;
+            font-weight: 700;
+        }
+        .brand p {
+            margin: 2px 0 0;
+            color: var(--muted);
+            font-size: 0.92rem;
+            line-height: 1.35;
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .toggle-group {
+            display: flex;
+            gap: 1px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: rgba(var(--tint), 0.08);
+        }
+        .toggle-btn {
+            min-height: 42px;
+            padding: 0 12px;
+            border-radius: 0;
+            background: transparent;
+            color: var(--muted);
+            font-weight: 700;
+        }
+        .toggle-btn[aria-pressed="true"] {
+            background: var(--surface-strong);
+            color: var(--text);
+        }
+        .theme-switch {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 42px;
+            padding: 0 10px 0 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: rgba(var(--tint), 0.06);
+            color: var(--text);
+            font-weight: 700;
+        }
+        .theme-switch:hover {
+            border-color: var(--border-strong);
+            background: rgba(var(--tint), 0.11);
+        }
+        .switch-track {
+            position: relative;
+            width: 42px;
+            height: 24px;
+            border: 1px solid var(--border-strong);
+            border-radius: 999px;
+            background: rgba(var(--tint), 0.11);
+        }
+        .switch-thumb {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 16px;
+            height: 16px;
+            border-radius: 999px;
+            background: var(--muted);
+            transition: left 160ms ease, background-color 160ms ease;
+        }
+        .theme-switch[aria-checked="true"] .switch-thumb {
+            left: 21px;
+            background: var(--gold-strong);
+        }
+        .main-container {
+            display: grid;
+            grid-template-columns: minmax(320px, 392px) minmax(0, 1fr);
+            gap: 20px;
+            align-items: start;
+        }
+        .sidebar,
+        .result-column {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            min-width: 0;
+        }
+        .glass-card {
+            position: relative;
+            min-width: 0;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--surface);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(22px) saturate(1.15);
+            -webkit-backdrop-filter: blur(22px) saturate(1.15);
+        }
+        .panel {
+            padding: 20px;
+        }
+        .section-title {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+        .section-title h2 {
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.25;
+            font-weight: 700;
+        }
+        .section-title p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.86rem;
+            line-height: 1.4;
+            text-align: right;
+        }
+        .field-grid {
+            display: grid;
+            gap: 14px;
+        }
+        .field {
+            display: grid;
+            gap: 7px;
+        }
+        label {
+            color: var(--muted);
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+        .input-shell {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .input-shell .prefix,
+        .input-shell .suffix {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted-2);
+            font-size: 0.92rem;
+            font-weight: 600;
+            pointer-events: none;
+        }
+        .input-shell .prefix {
+            left: 13px;
+        }
+        .input-shell .suffix {
+            right: 13px;
+        }
+        input,
+        select {
+            width: 100%;
+            min-height: 44px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--control-bg);
+            color: var(--text);
+            transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+        }
+        input {
+            padding: 10px 40px 10px 14px;
+            font-variant-numeric: tabular-nums;
+        }
+        .has-prefix input {
+            padding-left: 34px;
+        }
+        select {
+            padding: 10px 36px 10px 12px;
+            appearance: none;
+            background-image:
+                linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+                linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+            background-position:
+                calc(100% - 18px) 19px,
+                calc(100% - 12px) 19px;
+            background-size: 6px 6px, 6px 6px;
+            background-repeat: no-repeat;
+        }
+        input:hover,
+        select:hover {
+            border-color: var(--border-strong);
+            background-color: var(--control-bg-hover);
+        }
+        .field-hint {
+            color: var(--muted-2);
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+        .income-list {
+            display: grid;
+            gap: 10px;
+        }
+        .income-item {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(124px, 0.82fr) 44px;
+            gap: 8px;
+            align-items: end;
+            padding: 10px;
+            border: 1px solid rgba(var(--tint), 0.1);
+            border-radius: var(--radius);
+            background: var(--surface-soft);
+        }
+        .income-item input,
+        .income-item select {
+            min-height: 40px;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border-radius: var(--radius);
+            font-weight: 700;
+            line-height: 1;
+            transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+        }
+        .btn svg {
+            width: 18px;
+            height: 18px;
+            flex: 0 0 auto;
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 0 16px;
+            background: var(--gold);
+            color: var(--ink);
+        }
+        .btn-primary:hover {
+            background: var(--gold-strong);
+        }
+        .btn-secondary {
+            padding: 0 14px;
+            border: 1px solid var(--border);
+            background: rgba(var(--tint), 0.06);
+            color: var(--text);
+        }
+        .btn-secondary:hover {
+            border-color: var(--border-strong);
+            background: rgba(var(--tint), 0.11);
+        }
+        .btn-danger {
+            width: 44px;
+            padding: 0;
+            border: 1px solid rgba(226, 109, 99, 0.24);
+            background: rgba(226, 109, 99, 0.1);
+            color: #f0aaa3;
+        }
+        .btn-danger:hover {
+            background: rgba(226, 109, 99, 0.18);
+        }
+        .action-stack {
+            display: grid;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .settings-actions {
+            margin-top: 16px;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+        }
+        .stat-card {
+            min-height: 132px;
+            padding: 18px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: linear-gradient(180deg, rgba(var(--tint), 0.1), rgba(var(--tint), 0.055));
+        }
+        .stat-label {
+            display: block;
+            color: var(--muted);
+            font-size: 0.86rem;
+            font-weight: 600;
+            line-height: 1.35;
+        }
+        .stat-value {
+            margin-top: 12px;
+            color: var(--text);
+            font-size: clamp(1.38rem, 2.4vw, 2.1rem);
+            font-weight: 700;
+            line-height: 1.05;
+            font-variant-numeric: tabular-nums;
+            overflow-wrap: anywhere;
+        }
+        .stat-card.interest .stat-value {
+            color: var(--gold-strong);
+        }
+        .stat-card.total {
+            border-color: rgba(131, 193, 125, 0.36);
+            background: linear-gradient(180deg, rgba(131, 193, 125, 0.14), rgba(var(--tint), 0.055));
+        }
+        .stat-card.total .stat-value {
+            color: var(--green-strong);
+        }
+        .trust-strip {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--border);
+        }
+        .trust-item {
+            min-height: 78px;
+            padding: 14px;
+            background: rgba(var(--tint), 0.045);
+        }
+        .trust-item strong {
+            display: block;
+            font-size: 0.91rem;
+            line-height: 1.3;
+        }
+        .trust-item span {
+            display: block;
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 0.8rem;
+            line-height: 1.35;
+        }
+        .chart-panel {
+            padding: 20px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            min-width: 0;
+            height: 430px;
+            touch-action: none;
+        }
+        .chart-svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .chart-grid {
+            stroke: rgba(var(--tint), 0.08);
+            stroke-width: 1;
+        }
+        .chart-axis {
+            stroke: rgba(var(--tint), 0.16);
+            stroke-width: 1;
+        }
+        .chart-area {
+            fill: url(#balanceGradient);
+        }
+        .chart-balance,
+        .chart-deposits {
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .chart-balance {
+            stroke: var(--gold);
+            stroke-width: 3;
+        }
+        .chart-deposits {
+            stroke: var(--muted);
+            stroke-width: 2;
+            stroke-dasharray: 7 7;
+        }
+        .chart-label {
+            fill: var(--muted);
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .chart-point {
+            fill: var(--bg);
+            stroke: var(--gold-strong);
+            stroke-width: 2;
+        }
+        .chart-guide,
+        .chart-active {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 120ms ease;
+        }
+        .chart-container.is-reading .chart-guide,
+        .chart-container.is-reading .chart-active {
+            opacity: 1;
+        }
+        .chart-guide {
+            stroke: rgba(248, 243, 231, 0.45);
+            stroke-width: 1;
+            stroke-dasharray: 4 5;
+        }
+        .chart-active.balance {
+            fill: var(--bg);
+            stroke: var(--gold-strong);
+            stroke-width: 3;
+        }
+        .chart-active.deposits {
+            fill: var(--bg);
+            stroke: var(--muted);
+            stroke-width: 3;
+        }
+        .chart-tooltip {
+            position: absolute;
+            z-index: 2;
+            min-width: 210px;
+            padding: 12px;
+            border: 1px solid var(--border-strong);
+            border-radius: var(--radius);
+            background: color-mix(in srgb, var(--bg) 92%, transparent);
+            color: var(--text);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, calc(-100% - 14px));
+            transition: opacity 120ms ease;
+        }
+        .chart-container.is-reading .chart-tooltip {
+            opacity: 1;
+        }
+        .tooltip-year {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 10px;
+            color: var(--text);
+            font-size: 0.92rem;
+            font-weight: 700;
+        }
+        .tooltip-grid {
+            display: grid;
+            gap: 7px;
+        }
+        .tooltip-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 16px;
+            color: var(--muted);
+            font-size: 0.82rem;
+        }
+        .tooltip-row strong {
+            color: var(--text);
+            font-variant-numeric: tabular-nums;
+        }
+        .tooltip-row.balance strong {
+            color: var(--gold-strong);
+        }
+        .tooltip-row.return strong {
+            color: var(--green-text);
+        }
+        .chart-legend {
+            display: flex;
+            justify-content: flex-end;
+            gap: 18px;
+            margin-bottom: 8px;
+            color: var(--muted);
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+        .legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-line {
+            width: 18px;
+            height: 2px;
+            border-radius: 999px;
+            background: var(--gold);
+        }
+        .legend-line.deposits {
+            background: repeating-linear-gradient(90deg, var(--muted) 0 5px, transparent 5px 9px);
+        }
+        .table-card {
+            overflow: hidden;
+        }
+        .table-scroll {
+            overflow-x: auto;
+            min-width: 0;
+            max-width: 100%;
+        }
+        table {
+            width: 100%;
+            min-width: 720px;
+            border-collapse: collapse;
+            text-align: right;
+            font-size: 0.92rem;
+        }
+        caption {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+        }
+        th,
+        td {
+            padding: 13px 16px;
+            border-bottom: 1px solid rgba(var(--tint), 0.08);
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+        th {
+            color: var(--muted);
+            font-size: 0.82rem;
+            font-weight: 700;
+            background: rgba(var(--tint), 0.055);
+        }
+        td {
+            color: var(--text);
+        }
+        tbody tr:hover {
+            background: rgba(var(--tint), 0.045);
+        }
+        .align-left {
+            text-align: left;
+        }
+        .yield-value {
+            color: var(--green-text);
+            font-weight: 700;
+        }
+        .empty-note {
+            margin: 12px 0 0;
+            color: var(--muted-2);
+            font-size: 0.82rem;
+            line-height: 1.45;
+        }
+        @media (max-width: 1100px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 720px) {
+            .app-shell {
+                width: min(100% - 20px, 1480px);
+                max-width: calc(100vw - 20px);
+                padding-top: 10px;
+            }
+            .app-header {
+                position: static;
+                align-items: flex-start;
+                flex-direction: column;
+            }
+            .header-actions,
+            .header-actions .btn,
+            .theme-switch {
+                width: 100%;
+            }
+            .header-actions {
+                align-items: stretch;
+                flex-wrap: wrap;
+            }
+            .toggle-group {
+                width: 100%;
+            }
+            .toggle-btn {
+                flex: 1;
+            }
+            .theme-switch {
+                justify-content: space-between;
+            }
+            .section-title {
+                display: grid;
+                gap: 4px;
+            }
+            .section-title p {
+                text-align: left;
+            }
+            .income-item {
+                grid-template-columns: 1fr 44px;
+            }
+            .income-item select {
+                grid-column: 1 / -1;
+                grid-row: 2;
+            }
+            .income-item .btn-danger {
+                grid-column: 2;
+                grid-row: 1;
+            }
+            .trust-strip {
+                grid-template-columns: 1fr;
+            }
+            .chart-container {
+                height: 340px;
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-shell">
+        <header class="app-header">
+            <div class="brand" aria-label="Capital Claro">
+                <div class="brand-mark" aria-hidden="true">
+                    <img class="brand-mark-dark" src="favicon.svg" alt="">
+                    <img class="brand-mark-light" src="favicon-light.svg" alt="">
+                </div>
+                <div>
+                    <h1>Capital Claro</h1>
+                    <p>Calculadora de interés compuesto con aportaciones recurrentes.</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="theme-switch" id="themeToggle" type="button" role="switch" aria-checked="true" onclick="toggleTheme()" aria-label="Cambiar a modo claro">
+                    <span id="themeLabel">Oscuro</span>
+                    <span class="switch-track" aria-hidden="true">
+                        <span class="switch-thumb"></span>
+                    </span>
+                </button>
+                <div class="toggle-group" aria-label="Idioma">
+                    <button class="toggle-btn" id="langEs" type="button" onclick="setLanguage('es')" aria-pressed="true">ES</button>
+                    <button class="toggle-btn" id="langEn" type="button" onclick="setLanguage('en')" aria-pressed="false">EN</button>
+                </div>
+            </div>
+        </header>
+        <div class="main-container">
+            <aside class="sidebar" aria-label="Parámetros de cálculo">
+                <section class="glass-card panel">
+                    <div class="section-title">
+                        <h2>Configuración</h2>
+                        <p>Modelo anualizado</p>
+                    </div>
+                    <div class="field-grid">
+                        <div class="field">
+                            <label for="initialCapital">Capital inicial</label>
+                            <div class="input-shell has-prefix">
+                                <span class="prefix money-prefix">€</span>
+                                <input type="number" id="initialCapital" value="5000" min="0" step="100" inputmode="decimal">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="currencySelect">Divisa</label>
+                            <select id="currencySelect" onchange="setCurrency(this.value)">
+                                <option value="EUR" selected>EUR</option>
+                                <option value="USD">USD</option>
+                                <option value="GBP">GBP</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="annualRate">Interés anual estimado</label>
+                            <div class="input-shell">
+                                <input type="number" id="annualRate" value="8" step="0.1" inputmode="decimal">
+                                <span class="suffix">%</span>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="years">Horizonte temporal</label>
+                            <div class="input-shell">
+                                <input type="number" id="years" value="15" min="1" max="80" step="1" inputmode="numeric">
+                                <span class="suffix">años</span>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="compoundFreq">Frecuencia de capitalización</label>
+                            <select id="compoundFreq">
+                                <option value="365">Diaria (365 días)</option>
+                                <option value="260">Diaria bursátil (L-V)</option>
+                                <option value="52">Semanal</option>
+                                <option value="12">Mensual</option>
+                                <option value="1" selected>Anual</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="contributionTiming">Momento del depósito</label>
+                            <select id="contributionTiming">
+                                <option value="beginning">Principio del periodo</option>
+                                <option value="end" selected>Final del periodo</option>
+                            </select>
+                            <div class="field-hint">Los resultados no incluyen impuestos, comisiones ni inflación.</div>
+                        </div>
+                    </div>
+                    <div class="settings-actions">
+                        <button class="btn btn-secondary" id="exportButton" type="button" onclick="exportToCSV()" aria-label="Exportar tabla de proyección en CSV">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M12 3v12"></path>
+                                <path d="m7 10 5 5 5-5"></path>
+                                <path d="M5 21h14"></path>
+                            </svg>
+                            <span id="exportLabel">Exportar CSV</span>
+                        </button>
+                    </div>
+                </section>
+                <section class="glass-card panel">
+                    <div class="section-title">
+                        <h2>Aportaciones</h2>
+                        <p>Flujos recurrentes</p>
+                    </div>
+                    <div id="incomeContainer" class="income-list" aria-live="polite">
+                        <div class="income-item">
+                            <div class="input-shell has-prefix">
+                                <span class="prefix money-prefix">€</span>
+                                <input type="number" class="inc-amount" value="250" min="0" step="25" inputmode="decimal" aria-label="Importe de aportación recurrente">
+                            </div>
+                            <select class="inc-freq" aria-label="Frecuencia de aportación recurrente">
+                                <option value="52">Semanal</option>
+                                <option value="12" selected>Mensual</option>
+                                <option value="4">Trimestral</option>
+                                <option value="2">Semestral</option>
+                                <option value="1">Anual</option>
+                            </select>
+                            <button class="btn btn-danger" type="button" onclick="removeIncomeRow(this)" aria-label="Eliminar aportación">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true">
+                                    <path d="M6 6l12 12"></path>
+                                    <path d="M18 6 6 18"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="action-stack">
+                        <button class="btn btn-secondary" type="button" onclick="addIncomeRow()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true">
+                                <path d="M12 5v14"></path>
+                                <path d="M5 12h14"></path>
+                            </svg>
+                            Añadir flujo
+                        </button>
+                        <button class="btn btn-primary" type="button" onclick="calculate()">
+                            Actualizar proyección
+                        </button>
+                    </div>
+                </section>
+                <section class="trust-strip" aria-label="Notas de confianza">
+                    <div class="trust-item">
+                        <strong>Cálculo local</strong>
+                        <span>No se envían datos fuera del navegador.</span>
+                    </div>
+                    <div class="trust-item">
+                        <strong>CSV auditable</strong>
+                        <span>La tabla anual se puede exportar para revisar supuestos.</span>
+                    </div>
+                    <div class="trust-item">
+                        <strong>Supuesto explícito</strong>
+                        <span>Rentabilidad constante, sin garantía de rendimiento.</span>
+                    </div>
+                </section>
+            </aside>
+            <main class="result-column">
+                <section class="summary-grid" aria-label="Resumen de resultados">
+                    <div class="stat-card">
+                        <span class="stat-label">Capital invertido</span>
+                        <div class="stat-value" id="resDeposits">0 €</div>
+                    </div>
+                    <div class="stat-card interest">
+                        <span class="stat-label">Intereses generados</span>
+                        <div class="stat-value" id="resInterest">0 €</div>
+                    </div>
+                    <div class="stat-card total">
+                        <span class="stat-label">Valor final estimado</span>
+                        <div class="stat-value" id="resTotal">0 €</div>
+                    </div>
+                </section>
+                <section class="glass-card chart-panel">
+                    <div class="section-title">
+                        <h2>Crecimiento de la cartera</h2>
+                        <p id="chartSummary">Proyección a largo plazo</p>
+                    </div>
+                    <div class="chart-legend" aria-hidden="true">
+                        <span class="legend-item"><span class="legend-line"></span>Balance total</span>
+                        <span class="legend-item"><span class="legend-line deposits"></span>Total aportado</span>
+                    </div>
+                    <div id="growthChart" class="chart-container" aria-label="Gráfico de balance total y capital aportado por año" role="img"></div>
+                </section>
+                <section class="glass-card table-card">
+                    <div class="panel">
+                        <div class="section-title">
+                            <h2>Desglose anual</h2>
+                            <p>Capital, intereses y balance</p>
+                        </div>
+                    </div>
+                    <div class="table-scroll">
+                        <table id="resultsTable">
+                            <caption>Desglose anual de la proyección de inversión</caption>
+                            <thead>
+                                <tr>
+                                    <th class="align-left" scope="col">Año</th>
+                                    <th scope="col">Aportado</th>
+                                    <th scope="col">Intereses</th>
+                                    <th scope="col">Rendimiento</th>
+                                    <th scope="col">Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <p class="empty-note panel">La proyección es orientativa. Cambia las variables para comparar escenarios antes de tomar decisiones financieras.</p>
+                </section>
+            </main>
+        </div>
+    </div>
+    <script>
+        let historyData = [];
+        let calculateTimer;
+        let currentLang = localStorage.getItem('capitalClaroLang') || (navigator.language?.startsWith('en') ? 'en' : 'es');
+        currentLang = currentLang === 'en' ? 'en' : 'es';
+        let currentTheme = localStorage.getItem('capitalClaroTheme') || 'dark';
+        let currentCurrency = ['EUR', 'USD', 'GBP'].includes(localStorage.getItem('capitalClaroCurrency')) ? localStorage.getItem('capitalClaroCurrency') : 'EUR';
+        let currencyFormatter;
+        let preciseCurrencyFormatter;
+        const currencySymbols = { EUR: '€', USD: '$', GBP: '£' };
+        const translations = {
+            es: {
+                pageTitle: 'Capital Claro | Calculadora de Interés Compuesto',
+                brandSub: 'Calculadora de interés compuesto con aportaciones recurrentes.',
+                exportCsv: 'Exportar CSV',
+                exportAria: 'Exportar tabla de proyección en CSV',
+                light: 'Claro',
+                dark: 'Oscuro',
+                switchLight: 'Cambiar a modo claro',
+                switchDark: 'Cambiar a modo oscuro',
+                calcParams: 'Parámetros de cálculo',
+                config: 'Configuración',
+                annualized: 'Modelo anualizado',
+                initialCapital: 'Capital inicial',
+                currency: 'Divisa',
+                annualRate: 'Interés anual estimado',
+                timeHorizon: 'Horizonte temporal',
+                yearsSuffix: 'años',
+                compoundFrequency: 'Frecuencia de capitalización',
+                depositTiming: 'Momento del depósito',
+                disclaimer: 'Los resultados no incluyen impuestos, comisiones ni inflación.',
+                contributions: 'Aportaciones',
+                recurrentFlows: 'Flujos recurrentes',
+                contributionAmountAria: 'Importe de aportación recurrente',
+                contributionFrequencyAria: 'Frecuencia de aportación recurrente',
+                removeContributionAria: 'Eliminar aportación',
+                addFlow: 'Añadir flujo',
+                updateProjection: 'Actualizar proyección',
+                trustAria: 'Notas de confianza',
+                localCalcTitle: 'Cálculo local',
+                localCalcText: 'No se envían datos fuera del navegador.',
+                auditCsvTitle: 'CSV auditable',
+                auditCsvText: 'La tabla anual se puede exportar para revisar supuestos.',
+                explicitAssumptionTitle: 'Supuesto explícito',
+                explicitAssumptionText: 'Rentabilidad constante, sin garantía de rendimiento.',
+                summaryAria: 'Resumen de resultados',
+                investedCapital: 'Capital invertido',
+                generatedInterest: 'Intereses generados',
+                finalValue: 'Valor final estimado',
+                chartTitle: 'Crecimiento de la cartera',
+                longProjection: 'Proyección a largo plazo',
+                totalBalance: 'Balance total',
+                totalContributed: 'Total aportado',
+                chartAria: 'Gráfico de balance total y capital aportado por año',
+                annualBreakdown: 'Desglose anual',
+                annualBreakdownSub: 'Capital, intereses y balance',
+                tableCaption: 'Desglose anual de la proyección de inversión',
+                year: 'Año',
+                contributed: 'Aportado',
+                interest: 'Intereses',
+                return: 'Rendimiento',
+                balance: 'Balance',
+                note: 'La proyección es orientativa. Cambia las variables para comparar escenarios antes de tomar decisiones financieras.',
+                chartSummary: (years, rate) => `${years} años, ${rate}% anual`,
+                yearLabel: year => `Año ${year}`,
+                csvName: 'proyeccion_inversion.csv',
+                csvHeader: 'Año;Aportado;Intereses;Rendimiento;Total\n',
+                frequencies: {
+                    compound: [
+                        ['365', 'Diaria (365 días)'],
+                        ['260', 'Diaria bursátil (L-V)'],
+                        ['52', 'Semanal'],
+                        ['12', 'Mensual'],
+                        ['1', 'Anual']
+                    ],
+                    contribution: [
+                        ['52', 'Semanal'],
+                        ['12', 'Mensual'],
+                        ['4', 'Trimestral'],
+                        ['2', 'Semestral'],
+                        ['1', 'Anual']
+                    ],
+                    timing: [
+                        ['beginning', 'Principio del periodo'],
+                        ['end', 'Final del periodo']
+                    ]
+                }
+            },
+            en: {
+                pageTitle: 'Capital Claro | Compound Interest Calculator',
+                brandSub: 'Compound interest calculator with recurring contributions.',
+                exportCsv: 'Export CSV',
+                exportAria: 'Export projection table as CSV',
+                light: 'Light',
+                dark: 'Dark',
+                switchLight: 'Switch to light mode',
+                switchDark: 'Switch to dark mode',
+                calcParams: 'Calculation parameters',
+                config: 'Settings',
+                annualized: 'Annualized model',
+                initialCapital: 'Initial capital',
+                currency: 'Currency',
+                annualRate: 'Estimated annual interest',
+                timeHorizon: 'Time horizon',
+                yearsSuffix: 'years',
+                compoundFrequency: 'Compounding frequency',
+                depositTiming: 'Contribution timing',
+                disclaimer: 'Results exclude taxes, fees and inflation.',
+                contributions: 'Contributions',
+                recurrentFlows: 'Recurring flows',
+                contributionAmountAria: 'Recurring contribution amount',
+                contributionFrequencyAria: 'Recurring contribution frequency',
+                removeContributionAria: 'Remove contribution',
+                addFlow: 'Add flow',
+                updateProjection: 'Update projection',
+                trustAria: 'Trust notes',
+                localCalcTitle: 'Local calculation',
+                localCalcText: 'No data leaves your browser.',
+                auditCsvTitle: 'Auditable CSV',
+                auditCsvText: 'Export the annual table to review assumptions.',
+                explicitAssumptionTitle: 'Explicit assumption',
+                explicitAssumptionText: 'Constant return, with no performance guarantee.',
+                summaryAria: 'Results summary',
+                investedCapital: 'Invested capital',
+                generatedInterest: 'Generated interest',
+                finalValue: 'Estimated final value',
+                chartTitle: 'Portfolio growth',
+                longProjection: 'Long-term projection',
+                totalBalance: 'Total balance',
+                totalContributed: 'Total contributed',
+                chartAria: 'Chart of total balance and contributed capital by year',
+                annualBreakdown: 'Annual breakdown',
+                annualBreakdownSub: 'Capital, interest and balance',
+                tableCaption: 'Annual breakdown of the investment projection',
+                year: 'Year',
+                contributed: 'Contributed',
+                interest: 'Interest',
+                return: 'Return',
+                balance: 'Balance',
+                note: 'This projection is indicative. Change the inputs to compare scenarios before making financial decisions.',
+                chartSummary: (years, rate) => `${years} years, ${rate}% annual`,
+                yearLabel: year => `Year ${year}`,
+                csvName: 'investment_projection.csv',
+                csvHeader: 'Year;Contributed;Interest;Return;Total\n',
+                frequencies: {
+                    compound: [
+                        ['365', 'Daily (365 days)'],
+                        ['260', 'Trading days (Mon-Fri)'],
+                        ['52', 'Weekly'],
+                        ['12', 'Monthly'],
+                        ['1', 'Annual']
+                    ],
+                    contribution: [
+                        ['52', 'Weekly'],
+                        ['12', 'Monthly'],
+                        ['4', 'Quarterly'],
+                        ['2', 'Semiannual'],
+                        ['1', 'Annual']
+                    ],
+                    timing: [
+                        ['beginning', 'Beginning of period'],
+                        ['end', 'End of period']
+                    ]
+                }
+            }
+        };
+        function t(key) {
+            return translations[currentLang][key];
+        }
+        function refreshFormatters() {
+            const locale = currentLang === 'en' ? 'en-US' : 'es-ES';
+            currencyFormatter = new Intl.NumberFormat(locale, {
+                style: 'currency',
+                currency: currentCurrency,
+                maximumFractionDigits: 0
+            });
+            preciseCurrencyFormatter = new Intl.NumberFormat(locale, {
+                style: 'currency',
+                currency: currentCurrency,
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+        function scheduleCalculation() {
+            clearTimeout(calculateTimer);
+            calculateTimer = setTimeout(calculate, 180);
+        }
+        function optionMarkup(group, selectedValue) {
+            return t('frequencies')[group]
+                .map(([value, label]) => `<option value="${value}"${value === selectedValue ? ' selected' : ''}>${label}</option>`)
+                .join('');
+        }
+        function updateSelectOptions(select, group) {
+            const value = select.value;
+            select.innerHTML = optionMarkup(group, value);
+            select.value = value;
+        }
+        function applyTheme(theme) {
+            currentTheme = theme === 'light' ? 'light' : 'dark';
+            localStorage.setItem('capitalClaroTheme', currentTheme);
+            document.documentElement.dataset.theme = currentTheme;
+            const lightActive = currentTheme === 'light';
+            document.getElementById('themeToggle').setAttribute('aria-label', lightActive ? t('switchDark') : t('switchLight'));
+            document.getElementById('themeToggle').setAttribute('aria-checked', String(!lightActive));
+            document.getElementById('themeLabel').textContent = lightActive ? t('light') : t('dark');
+        }
+        function toggleTheme() {
+            applyTheme(currentTheme === 'light' ? 'dark' : 'light');
+            renderChart(historyData);
+        }
+        function setLanguage(lang) {
+            currentLang = lang === 'en' ? 'en' : 'es';
+            localStorage.setItem('capitalClaroLang', currentLang);
+            applyLanguage();
+            calculate();
+        }
+        function setCurrency(currency) {
+            currentCurrency = ['EUR', 'USD', 'GBP'].includes(currency) ? currency : 'EUR';
+            localStorage.setItem('capitalClaroCurrency', currentCurrency);
+            refreshFormatters();
+            updateCurrencyUI();
+            calculate();
+        }
+        function updateCurrencyUI() {
+            document.getElementById('currencySelect').value = currentCurrency;
+            document.querySelectorAll('.money-prefix').forEach(prefix => {
+                prefix.textContent = currencySymbols[currentCurrency];
+            });
+        }
+        function applyLanguage() {
+            refreshFormatters();
+            document.documentElement.lang = currentLang;
+            document.title = t('pageTitle');
+            document.querySelector('.brand').setAttribute('aria-label', 'Capital Claro');
+            document.querySelector('.brand p').textContent = t('brandSub');
+            document.getElementById('exportLabel').textContent = t('exportCsv');
+            document.getElementById('exportButton').setAttribute('aria-label', t('exportAria'));
+            document.getElementById('langEs').setAttribute('aria-pressed', String(currentLang === 'es'));
+            document.getElementById('langEn').setAttribute('aria-pressed', String(currentLang === 'en'));
+            document.querySelector('.toggle-group').setAttribute('aria-label', currentLang === 'es' ? 'Idioma' : 'Language');
+            document.querySelector('.sidebar').setAttribute('aria-label', t('calcParams'));
+            const titles = document.querySelectorAll('.section-title');
+            titles[0].querySelector('h2').textContent = t('config');
+            titles[0].querySelector('p').textContent = t('annualized');
+            titles[1].querySelector('h2').textContent = t('contributions');
+            titles[1].querySelector('p').textContent = t('recurrentFlows');
+            titles[2].querySelector('h2').textContent = t('chartTitle');
+            titles[3].querySelector('h2').textContent = t('annualBreakdown');
+            titles[3].querySelector('p').textContent = t('annualBreakdownSub');
+            const configLabels = document.querySelectorAll('.field-grid label');
+            configLabels[0].textContent = t('initialCapital');
+            configLabels[1].textContent = t('currency');
+            configLabels[2].textContent = t('annualRate');
+            configLabels[3].textContent = t('timeHorizon');
+            configLabels[4].textContent = t('compoundFrequency');
+            configLabels[5].textContent = t('depositTiming');
+            document.querySelector('#years + .suffix').textContent = t('yearsSuffix');
+            document.querySelector('.field-hint').textContent = t('disclaimer');
+            updateSelectOptions(document.getElementById('compoundFreq'), 'compound');
+            updateSelectOptions(document.getElementById('contributionTiming'), 'timing');
+            document.querySelectorAll('.inc-freq').forEach(select => updateSelectOptions(select, 'contribution'));
+            updateCurrencyUI();
+            document.querySelectorAll('.inc-amount').forEach(input => input.setAttribute('aria-label', t('contributionAmountAria')));
+            document.querySelectorAll('.inc-freq').forEach(select => select.setAttribute('aria-label', t('contributionFrequencyAria')));
+            document.querySelectorAll('.btn-danger').forEach(button => button.setAttribute('aria-label', t('removeContributionAria')));
+            const actionButtons = document.querySelectorAll('.action-stack .btn');
+            actionButtons[0].lastChild.textContent = ` ${t('addFlow')}`;
+            actionButtons[1].textContent = t('updateProjection');
+            document.querySelector('.trust-strip').setAttribute('aria-label', t('trustAria'));
+            const trustItems = document.querySelectorAll('.trust-item');
+            trustItems[0].querySelector('strong').textContent = t('localCalcTitle');
+            trustItems[0].querySelector('span').textContent = t('localCalcText');
+            trustItems[1].querySelector('strong').textContent = t('auditCsvTitle');
+            trustItems[1].querySelector('span').textContent = t('auditCsvText');
+            trustItems[2].querySelector('strong').textContent = t('explicitAssumptionTitle');
+            trustItems[2].querySelector('span').textContent = t('explicitAssumptionText');
+            document.querySelector('.summary-grid').setAttribute('aria-label', t('summaryAria'));
+            const statLabels = document.querySelectorAll('.stat-label');
+            statLabels[0].textContent = t('investedCapital');
+            statLabels[1].textContent = t('generatedInterest');
+            statLabels[2].textContent = t('finalValue');
+            const legends = document.querySelectorAll('.legend-item');
+            legends[0].lastChild.textContent = t('totalBalance');
+            legends[1].lastChild.textContent = t('totalContributed');
+            document.getElementById('growthChart').setAttribute('aria-label', t('chartAria'));
+            document.querySelector('#resultsTable caption').textContent = t('tableCaption');
+            const tableHeads = document.querySelectorAll('#resultsTable th');
+            tableHeads[0].textContent = t('year');
+            tableHeads[1].textContent = t('contributed');
+            tableHeads[2].textContent = t('interest');
+            tableHeads[3].textContent = t('return');
+            tableHeads[4].textContent = t('balance');
+            document.querySelector('.empty-note').textContent = t('note');
+            applyTheme(currentTheme);
+        }
+        function addIncomeRow() {
+            const div = document.createElement('div');
+            div.className = 'income-item';
+            div.innerHTML = `
+                <div class="input-shell has-prefix">
+                    <span class="prefix money-prefix">${currencySymbols[currentCurrency]}</span>
+                    <input type="number" class="inc-amount" value="0" min="0" step="25" inputmode="decimal" aria-label="${t('contributionAmountAria')}">
+                </div>
+                <select class="inc-freq" aria-label="${t('contributionFrequencyAria')}">
+                    ${optionMarkup('contribution', '12')}
+                </select>
+                <button class="btn btn-danger" type="button" onclick="removeIncomeRow(this)" aria-label="${t('removeContributionAria')}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true">
+                        <path d="M6 6l12 12"></path>
+                        <path d="M18 6 6 18"></path>
+                    </svg>
+                </button>`;
+            document.getElementById('incomeContainer').appendChild(div);
+            div.querySelectorAll('input, select').forEach((el) => el.addEventListener('input', scheduleCalculation));
+            scheduleCalculation();
+        }
+        function removeIncomeRow(button) {
+            button.closest('.income-item').remove();
+            scheduleCalculation();
+        }
+        function calculate() {
+            const initialCapital = Math.max(parseFloat(document.getElementById('initialCapital').value) || 0, 0);
+            const annualRate = (parseFloat(document.getElementById('annualRate').value) || 0) / 100;
+            const rawYears = parseInt(document.getElementById('years').value, 10) || 1;
+            const years = Math.min(Math.max(rawYears, 1), 80);
+            const compoundFreq = parseInt(document.getElementById('compoundFreq').value, 10);
+            const timing = document.getElementById('contributionTiming').value;
+            const incomes = Array.from(document.querySelectorAll('.income-item')).map(row => ({
+                amount: Math.max(parseFloat(row.querySelector('.inc-amount').value) || 0, 0),
+                freq: parseInt(row.querySelector('.inc-freq').value, 10)
+            }));
+            let currentBalance = initialCapital;
+            let totalDeposits = initialCapital;
+            const ratePerPeriod = annualRate / compoundFreq;
+            historyData = [];
+            const tbody = document.querySelector('#resultsTable tbody');
+            tbody.innerHTML = '';
+            for (let y = 0; y <= years; y++) {
+                if (y > 0) {
+                    for (let d = 1; d <= 365; d++) {
+                        const isWeekend = (d % 7 === 6 || d % 7 === 0);
+                        let dailyContribution = 0;
+                        incomes.forEach(inc => {
+                            const interval = Math.round(365 / inc.freq);
+                            if (timing === 'beginning') {
+                                if ((d - 1) % interval === 0 && d <= (interval * inc.freq)) dailyContribution += inc.amount;
+                            } else {
+                                if (d % interval === 0 && d <= (interval * inc.freq)) dailyContribution += inc.amount;
+                            }
+                        });
+                        if (timing === 'beginning') {
+                            currentBalance += dailyContribution;
+                            totalDeposits += dailyContribution;
+                        }
+                        let applyInt = false;
+                        if (compoundFreq === 365) applyInt = true;
+                        else if (compoundFreq === 260 && !isWeekend) applyInt = true;
+                        else if (compoundFreq === 52 && d % 7 === 0) applyInt = true;
+                        else if (compoundFreq === 12 && d % 30 === 0 && d <= 360) applyInt = true;
+                        else if (compoundFreq === 1 && d === 365) applyInt = true;
+                        if (applyInt) currentBalance *= (1 + ratePerPeriod);
+                        if (timing === 'end') {
+                            currentBalance += dailyContribution;
+                            totalDeposits += dailyContribution;
+                        }
+                    }
+                }
+                const interest = currentBalance - totalDeposits;
+                const yieldPerc = totalDeposits > 0 ? interest / totalDeposits * 100 : 0;
+                historyData.push({
+                    year: y,
+                    deposits: totalDeposits,
+                    interest,
+                    yieldPerc,
+                    total: currentBalance
+                });
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="align-left"><strong>${t('yearLabel')(y)}</strong></td>
+                    <td>${preciseCurrencyFormatter.format(totalDeposits)}</td>
+                    <td>${preciseCurrencyFormatter.format(interest)}</td>
+                    <td><span class="yield-value">${formatPercent(yieldPerc)}</span></td>
+                    <td><strong>${preciseCurrencyFormatter.format(currentBalance)}</strong></td>
+                `;
+                tbody.appendChild(row);
+            }
+            const finalInterest = currentBalance - totalDeposits;
+            document.getElementById('resDeposits').innerText = currencyFormatter.format(totalDeposits);
+            document.getElementById('resInterest').innerText = currencyFormatter.format(finalInterest);
+            document.getElementById('resTotal').innerText = currencyFormatter.format(currentBalance);
+            document.getElementById('chartSummary').innerText = t('chartSummary')(years, formatPercent(annualRate * 100).replace('%', ''));
+            renderChart(historyData);
+        }
+        function renderChart(data) {
+            const chart = document.getElementById('growthChart');
+            const width = 920;
+            const height = 360;
+            const pad = { top: 18, right: 22, bottom: 38, left: 78 };
+            const innerW = width - pad.left - pad.right;
+            const innerH = height - pad.top - pad.bottom;
+            const maxValue = Math.max(...data.map(d => Math.max(d.total, d.deposits)), 1);
+            const yMax = maxValue * 1.08;
+            const x = index => pad.left + (data.length === 1 ? 0 : index / (data.length - 1) * innerW);
+            const y = value => pad.top + innerH - (value / yMax * innerH);
+            const points = key => data.map((d, index) => `${x(index).toFixed(1)},${y(d[key]).toFixed(1)}`).join(' ');
+            const balancePoints = points('total');
+            const depositsPoints = points('deposits');
+            const areaPoints = `${pad.left},${pad.top + innerH} ${balancePoints} ${pad.left + innerW},${pad.top + innerH}`;
+            const yTicks = Array.from({ length: 5 }, (_, i) => yMax / 4 * i);
+            const xStep = Math.max(1, Math.ceil((data.length - 1) / 5));
+            const pointEvery = Math.max(1, Math.ceil(data.length / 8));
+            const gridNodes = yTicks.map(value => {
+                const yy = y(value).toFixed(1);
+                return `<line class="chart-grid" x1="${pad.left}" y1="${yy}" x2="${pad.left + innerW}" y2="${yy}"></line><text class="chart-label" x="${pad.left - 12}" y="${Number(yy) + 4}" text-anchor="end">${compactCurrency(value)}</text>`;
+            }).join('');
+            const xLabels = data
+                .filter((_, index) => index % xStep === 0 || index === data.length - 1)
+                .map((d, _, ticks) => {
+                    const duplicateLast = ticks.filter(t => t.year === d.year).length > 1;
+                    return duplicateLast ? '' : `<text class="chart-label" x="${x(data.indexOf(d)).toFixed(1)}" y="${height - 10}" text-anchor="middle">${t('yearLabel')(d.year)}</text>`;
+                }).join('');
+            const pointNodes = data
+                .filter((_, index) => index % pointEvery === 0 || index === data.length - 1)
+                .map(d => `<circle class="chart-point" cx="${x(data.indexOf(d)).toFixed(1)}" cy="${y(d.total).toFixed(1)}" r="3.5"><title>${t('yearLabel')(d.year)}: ${preciseCurrencyFormatter.format(d.total)}</title></circle>`)
+                .join('');
+            chart.innerHTML = `
+                <svg class="chart-svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="balanceGradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#d6a84f" stop-opacity="0.28"></stop>
+                            <stop offset="100%" stop-color="#d6a84f" stop-opacity="0"></stop>
+                        </linearGradient>
+                    </defs>
+                    ${gridNodes}
+                    <line class="chart-axis" x1="${pad.left}" y1="${pad.top + innerH}" x2="${pad.left + innerW}" y2="${pad.top + innerH}"></line>
+                    <polygon class="chart-area" points="${areaPoints}"></polygon>
+                    <polyline class="chart-deposits" points="${depositsPoints}"></polyline>
+                    <polyline class="chart-balance" points="${balancePoints}"></polyline>
+                    ${pointNodes}
+                    <line id="chartGuide" class="chart-guide" x1="${pad.left}" y1="${pad.top}" x2="${pad.left}" y2="${pad.top + innerH}"></line>
+                    <circle id="chartBalancePoint" class="chart-active balance" cx="${pad.left}" cy="${pad.top + innerH}" r="5"></circle>
+                    <circle id="chartDepositPoint" class="chart-active deposits" cx="${pad.left}" cy="${pad.top + innerH}" r="4.5"></circle>
+                    ${xLabels}
+                </svg>
+                <div id="chartTooltip" class="chart-tooltip" role="status" aria-live="polite"></div>
+            `;
+            attachChartReading(chart, data, { width, height, pad, innerW, innerH, x, y });
+        }
+        function compactCurrency(value) {
+            return new Intl.NumberFormat(currentLang === 'en' ? 'en-US' : 'es-ES', {
+                style: 'currency',
+                currency: currentCurrency,
+                notation: 'compact',
+                maximumFractionDigits: 1
+            }).format(value);
+        }
+        function attachChartReading(chart, data, scale) {
+            const guide = chart.querySelector('#chartGuide');
+            const balancePoint = chart.querySelector('#chartBalancePoint');
+            const depositPoint = chart.querySelector('#chartDepositPoint');
+            const tooltip = chart.querySelector('#chartTooltip');
+            const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+            function updateFromPointer(event) {
+                const rect = chart.getBoundingClientRect();
+                const localX = clamp(event.clientX - rect.left, 0, rect.width);
+                const svgX = localX / rect.width * scale.width;
+                const ratio = clamp((svgX - scale.pad.left) / scale.innerW, 0, 1);
+                const index = clamp(Math.round(ratio * (data.length - 1)), 0, data.length - 1);
+                const row = data[index];
+                const activeX = scale.x(index);
+                const balanceY = scale.y(row.total);
+                const depositsY = scale.y(row.deposits);
+                const tooltipLeft = clamp(activeX / scale.width * rect.width, 112, rect.width - 112);
+                const tooltipTop = Math.min(balanceY, depositsY) / scale.height * rect.height;
+                guide.setAttribute('x1', activeX);
+                guide.setAttribute('x2', activeX);
+                balancePoint.setAttribute('cx', activeX);
+                balancePoint.setAttribute('cy', balanceY);
+                depositPoint.setAttribute('cx', activeX);
+                depositPoint.setAttribute('cy', depositsY);
+                tooltip.style.left = `${tooltipLeft}px`;
+                tooltip.style.top = `${Math.max(82, tooltipTop)}px`;
+                tooltip.innerHTML = `
+                    <div class="tooltip-year"><span>${t('yearLabel')(row.year)}</span><span>${formatPercent(row.yieldPerc)}</span></div>
+                    <div class="tooltip-grid">
+                        <div class="tooltip-row balance"><span>${t('balance')}</span><strong>${preciseCurrencyFormatter.format(row.total)}</strong></div>
+                        <div class="tooltip-row"><span>${t('contributed')}</span><strong>${preciseCurrencyFormatter.format(row.deposits)}</strong></div>
+                        <div class="tooltip-row"><span>${t('interest')}</span><strong>${preciseCurrencyFormatter.format(row.interest)}</strong></div>
+                        <div class="tooltip-row return"><span>${t('return')}</span><strong>${formatPercent(row.yieldPerc)}</strong></div>
+                    </div>
+                `;
+                chart.classList.add('is-reading');
+            }
+            chart.onpointermove = updateFromPointer;
+            chart.onpointerenter = updateFromPointer;
+            chart.onpointerleave = () => chart.classList.remove('is-reading');
+            chart.onpointercancel = () => chart.classList.remove('is-reading');
+        }
+        function formatPercent(value) {
+            return `${value.toLocaleString(currentLang === 'en' ? 'en-US' : 'es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`;
+        }
+        function exportToCSV() {
+            let csvContent = t('csvHeader');
+            historyData.forEach(row => {
+                csvContent += `${row.year};${row.deposits.toFixed(2)};${row.interest.toFixed(2)};${formatPercent(row.yieldPerc)};${row.total.toFixed(2)}\n`;
+            });
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute('download', t('csvName'));
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+        document.querySelectorAll('input, select').forEach((el) => {
+            el.addEventListener('input', scheduleCalculation);
+            el.addEventListener('change', scheduleCalculation);
+        });
+        applyLanguage();
+        calculate();
+    </script>
+</body>
+</html>
