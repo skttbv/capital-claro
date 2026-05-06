@@ -146,7 +146,7 @@
             box-shadow: var(--focus);
         }
         .app-shell {
-            width: min(1480px, calc(100% - 32px));
+            width: min(1720px, calc(100% - 32px));
             margin: 0 auto;
             padding: 18px 0 36px;
             overflow-x: clip;
@@ -178,17 +178,14 @@
             place-items: center;
             width: 40px;
             height: 40px;
-            border: 1px solid var(--border-strong);
-            border-radius: var(--radius);
-            background: rgba(214, 168, 79, 0.09);
-            overflow: hidden;
         }
         .brand-mark img {
-            width: 100%;
-            height: 100%;
+            width: 34px;
+            height: 34px;
             display: block;
         }
-        .brand-mark-light {
+        .brand-mark-light,
+        html:not([data-theme="light"]) .brand-mark-light {
             display: none;
         }
         html[data-theme="light"] .brand-mark-dark {
@@ -223,7 +220,7 @@
             background: rgba(var(--tint), 0.08);
         }
         .toggle-btn {
-            min-height: 42px;
+            min-height: 44px;
             padding: 0 12px;
             border-radius: 0;
             background: transparent;
@@ -238,7 +235,7 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            min-height: 42px;
+            min-height: 44px;
             padding: 0 10px 0 12px;
             border: 1px solid var(--border);
             border-radius: var(--radius);
@@ -274,7 +271,7 @@
         }
         .main-container {
             display: grid;
-            grid-template-columns: minmax(320px, 392px) minmax(0, 1fr);
+            grid-template-columns: clamp(400px, 29vw, 500px) minmax(0, 1fr);
             gap: 20px;
             align-items: start;
         }
@@ -321,6 +318,14 @@
         .field-grid {
             display: grid;
             gap: 14px;
+        }
+        @media (min-width: 1180px) {
+            .field-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .field-wide {
+                grid-column: 1 / -1;
+            }
         }
         .field {
             display: grid;
@@ -407,7 +412,7 @@
         }
         .income-item input,
         .income-item select {
-            min-height: 40px;
+            min-height: 44px;
         }
         .btn {
             display: inline-flex;
@@ -458,12 +463,9 @@
             gap: 10px;
             margin-top: 16px;
         }
-        .settings-actions {
-            margin-top: 16px;
-        }
         .summary-grid {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.25fr);
             gap: 12px;
         }
         .stat-card {
@@ -532,13 +534,14 @@
             position: relative;
             width: 100%;
             min-width: 0;
-            height: 430px;
+            height: clamp(380px, 31vw, 520px);
             touch-action: none;
         }
         .chart-svg {
             display: block;
             width: 100%;
             height: 100%;
+            overflow: visible;
         }
         .chart-grid {
             stroke: rgba(var(--tint), 0.08);
@@ -575,6 +578,7 @@
             fill: var(--bg);
             stroke: var(--gold-strong);
             stroke-width: 2;
+            vector-effect: non-scaling-stroke;
         }
         .chart-guide,
         .chart-active {
@@ -595,11 +599,13 @@
             fill: var(--bg);
             stroke: var(--gold-strong);
             stroke-width: 3;
+            vector-effect: non-scaling-stroke;
         }
         .chart-active.deposits {
             fill: var(--bg);
             stroke: var(--muted);
             stroke-width: 3;
+            vector-effect: non-scaling-stroke;
         }
         .chart-tooltip {
             position: absolute;
@@ -676,8 +682,42 @@
         .legend-line.deposits {
             background: repeating-linear-gradient(90deg, var(--muted) 0 5px, transparent 5px 9px);
         }
+        .chart-meta {
+            display: grid;
+            gap: 3px;
+            text-align: right;
+        }
+        .chart-hint {
+            color: var(--muted-2);
+            font-size: 0.78rem;
+            line-height: 1.3;
+        }
         .table-card {
             overflow: hidden;
+        }
+        .table-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+        .table-title-copy {
+            display: grid;
+            gap: 4px;
+        }
+        .table-title-copy h2,
+        .table-title-copy p {
+            margin: 0;
+        }
+        .table-title-copy h2 {
+            font-size: 1rem;
+            line-height: 1.25;
+            font-weight: 700;
+        }
+        .table-title-copy p {
+            color: var(--muted);
+            font-size: 0.86rem;
+            line-height: 1.4;
         }
         .table-scroll {
             overflow-x: auto;
@@ -740,7 +780,7 @@
         }
         @media (max-width: 720px) {
             .app-shell {
-                width: min(100% - 20px, 1480px);
+                width: min(100% - 20px, 1720px);
                 max-width: calc(100vw - 20px);
                 padding-top: 10px;
             }
@@ -758,13 +798,38 @@
                 align-items: stretch;
                 flex-wrap: wrap;
             }
-            .toggle-group {
+            .main-container {
+                display: flex;
+                flex-direction: column;
+            }
+            .result-column {
+                display: contents;
+            }
+            .summary-grid {
+                order: 1;
                 width: 100%;
+            }
+            .sidebar {
+                order: 2;
+                width: 100%;
+            }
+            .chart-panel {
+                order: 3;
+                width: 100%;
+            }
+            .table-card {
+                order: 4;
+                width: 100%;
+            }
+            .toggle-group {
+                flex: 1;
+                width: auto;
             }
             .toggle-btn {
                 flex: 1;
             }
             .theme-switch {
+                flex: 1;
                 justify-content: space-between;
             }
             .section-title {
@@ -789,7 +854,62 @@
                 grid-template-columns: 1fr;
             }
             .chart-container {
-                height: 340px;
+                height: clamp(340px, 86vw, 430px);
+            }
+            .chart-meta,
+            .chart-legend {
+                text-align: left;
+                justify-content: flex-start;
+            }
+            .table-heading {
+                display: grid;
+                gap: 12px;
+            }
+            .table-heading .btn {
+                width: 100%;
+            }
+            table {
+                min-width: 0;
+                font-size: 0.9rem;
+            }
+            thead {
+                display: none;
+            }
+            tbody {
+                display: grid;
+                gap: 10px;
+                padding: 0 12px 12px;
+            }
+            tbody tr {
+                display: grid;
+                gap: 8px;
+                padding: 12px;
+                border: 1px solid rgba(var(--tint), 0.1);
+                border-radius: var(--radius);
+                background: var(--surface-soft);
+            }
+            tbody tr:hover {
+                background: var(--surface-soft);
+            }
+            td {
+                display: flex;
+                align-items: baseline;
+                justify-content: space-between;
+                gap: 14px;
+                padding: 0;
+                border-bottom: 0;
+                white-space: normal;
+                text-align: right;
+            }
+            td::before {
+                content: attr(data-label);
+                color: var(--muted);
+                font-size: 0.82rem;
+                font-weight: 700;
+                text-align: left;
+            }
+            td.align-left {
+                text-align: right;
             }
         }
         @media (prefers-reduced-motion: reduce) {
@@ -877,7 +997,7 @@
                                 <option value="1" selected>Anual</option>
                             </select>
                         </div>
-                        <div class="field">
+                        <div class="field field-wide">
                             <label for="contributionTiming">Momento del depósito</label>
                             <select id="contributionTiming">
                                 <option value="beginning">Principio del periodo</option>
@@ -885,16 +1005,6 @@
                             </select>
                             <div class="field-hint">Los resultados no incluyen impuestos, comisiones ni inflación.</div>
                         </div>
-                    </div>
-                    <div class="settings-actions">
-                        <button class="btn btn-secondary" id="exportButton" type="button" onclick="exportToCSV()" aria-label="Exportar tabla de proyección en CSV">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                <path d="M12 3v12"></path>
-                                <path d="m7 10 5 5 5-5"></path>
-                                <path d="M5 21h14"></path>
-                            </svg>
-                            <span id="exportLabel">Exportar CSV</span>
-                        </button>
                     </div>
                 </section>
                 <section class="glass-card panel">
@@ -969,7 +1079,10 @@
                 <section class="glass-card chart-panel">
                     <div class="section-title">
                         <h2>Crecimiento de la cartera</h2>
-                        <p id="chartSummary">Proyección a largo plazo</p>
+                        <div class="chart-meta">
+                            <p id="chartSummary">Proyección a largo plazo</p>
+                            <span class="chart-hint" id="chartHint">Pasa el cursor para ver detalle.</span>
+                        </div>
                     </div>
                     <div class="chart-legend" aria-hidden="true">
                         <span class="legend-item"><span class="legend-line"></span>Balance total</span>
@@ -979,9 +1092,19 @@
                 </section>
                 <section class="glass-card table-card">
                     <div class="panel">
-                        <div class="section-title">
-                            <h2>Desglose anual</h2>
-                            <p>Capital, intereses y balance</p>
+                        <div class="table-heading">
+                            <div class="table-title-copy">
+                                <h2>Desglose anual</h2>
+                                <p>Capital, intereses y balance</p>
+                            </div>
+                            <button class="btn btn-secondary" id="exportButton" type="button" onclick="exportToCSV()" aria-label="Exportar tabla de proyección en CSV">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M12 3v12"></path>
+                                    <path d="m7 10 5 5 5-5"></path>
+                                    <path d="M5 21h14"></path>
+                                </svg>
+                                <span id="exportLabel">Exportar CSV</span>
+                            </button>
                         </div>
                     </div>
                     <div class="table-scroll">
@@ -1007,6 +1130,7 @@
     <script>
         let historyData = [];
         let calculateTimer;
+        let resizeTimer;
         let currentLang = localStorage.getItem('capitalClaroLang') || (navigator.language?.startsWith('en') ? 'en' : 'es');
         currentLang = currentLang === 'en' ? 'en' : 'es';
         let currentTheme = localStorage.getItem('capitalClaroTheme') || 'dark';
@@ -1055,6 +1179,7 @@
                 finalValue: 'Valor final estimado',
                 chartTitle: 'Crecimiento de la cartera',
                 longProjection: 'Proyección a largo plazo',
+                chartHint: 'Pasa el cursor o toca la gráfica para ver detalle.',
                 totalBalance: 'Balance total',
                 totalContributed: 'Total aportado',
                 chartAria: 'Gráfico de balance total y capital aportado por año',
@@ -1132,6 +1257,7 @@
                 finalValue: 'Estimated final value',
                 chartTitle: 'Portfolio growth',
                 longProjection: 'Long-term projection',
+                chartHint: 'Hover or tap the chart to inspect details.',
                 totalBalance: 'Total balance',
                 totalContributed: 'Total contributed',
                 chartAria: 'Chart of total balance and contributed capital by year',
@@ -1190,6 +1316,14 @@
         function scheduleCalculation() {
             clearTimeout(calculateTimer);
             calculateTimer = setTimeout(calculate, 180);
+        }
+        function scheduleChartResize() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (historyData.length) {
+                    renderChart(historyData);
+                }
+            }, 120);
         }
         function optionMarkup(group, selectedValue) {
             return t('frequencies')[group]
@@ -1251,8 +1385,9 @@
             titles[1].querySelector('h2').textContent = t('contributions');
             titles[1].querySelector('p').textContent = t('recurrentFlows');
             titles[2].querySelector('h2').textContent = t('chartTitle');
-            titles[3].querySelector('h2').textContent = t('annualBreakdown');
-            titles[3].querySelector('p').textContent = t('annualBreakdownSub');
+            document.getElementById('chartHint').textContent = t('chartHint');
+            document.querySelector('.table-title-copy h2').textContent = t('annualBreakdown');
+            document.querySelector('.table-title-copy p').textContent = t('annualBreakdownSub');
             const configLabels = document.querySelectorAll('.field-grid label');
             configLabels[0].textContent = t('initialCapital');
             configLabels[1].textContent = t('currency');
@@ -1382,11 +1517,11 @@
                 });
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td class="align-left"><strong>${t('yearLabel')(y)}</strong></td>
-                    <td>${preciseCurrencyFormatter.format(totalDeposits)}</td>
-                    <td>${preciseCurrencyFormatter.format(interest)}</td>
-                    <td><span class="yield-value">${formatPercent(yieldPerc)}</span></td>
-                    <td><strong>${preciseCurrencyFormatter.format(currentBalance)}</strong></td>
+                    <td class="align-left" data-label="${t('year')}"><strong>${t('yearLabel')(y)}</strong></td>
+                    <td data-label="${t('contributed')}">${preciseCurrencyFormatter.format(totalDeposits)}</td>
+                    <td data-label="${t('interest')}">${preciseCurrencyFormatter.format(interest)}</td>
+                    <td data-label="${t('return')}"><span class="yield-value">${formatPercent(yieldPerc)}</span></td>
+                    <td data-label="${t('balance')}"><strong>${preciseCurrencyFormatter.format(currentBalance)}</strong></td>
                 `;
                 tbody.appendChild(row);
             }
@@ -1399,9 +1534,13 @@
         }
         function renderChart(data) {
             const chart = document.getElementById('growthChart');
-            const width = 920;
-            const height = 360;
-            const pad = { top: 18, right: 22, bottom: 38, left: 78 };
+            const rect = chart.getBoundingClientRect();
+            const isMobileChart = rect.width < 520;
+            const width = Math.max(Math.round(rect.width), 1);
+            const height = Math.max(Math.round(rect.height), 1);
+            const pad = isMobileChart
+                ? { top: 18, right: 14, bottom: 38, left: 58 }
+                : { top: 18, right: 22, bottom: 38, left: 78 };
             const innerW = width - pad.left - pad.right;
             const innerH = height - pad.top - pad.bottom;
             const maxValue = Math.max(...data.map(d => Math.max(d.total, d.deposits)), 1);
@@ -1415,15 +1554,16 @@
             const yTicks = Array.from({ length: 5 }, (_, i) => yMax / 4 * i);
             const xStep = Math.max(1, Math.ceil((data.length - 1) / 5));
             const pointEvery = Math.max(1, Math.ceil(data.length / 8));
+            const labelSize = isMobileChart ? 11 : 12;
             const gridNodes = yTicks.map(value => {
                 const yy = y(value).toFixed(1);
-                return `<line class="chart-grid" x1="${pad.left}" y1="${yy}" x2="${pad.left + innerW}" y2="${yy}"></line><text class="chart-label" x="${pad.left - 12}" y="${Number(yy) + 4}" text-anchor="end">${compactCurrency(value)}</text>`;
+                return `<line class="chart-grid" x1="${pad.left}" y1="${yy}" x2="${pad.left + innerW}" y2="${yy}"></line><text class="chart-label" style="font-size:${labelSize}px" x="${pad.left - 12}" y="${Number(yy) + 4}" text-anchor="end">${compactCurrency(value)}</text>`;
             }).join('');
             const xLabels = data
                 .filter((_, index) => index % xStep === 0 || index === data.length - 1)
                 .map((d, _, ticks) => {
                     const duplicateLast = ticks.filter(t => t.year === d.year).length > 1;
-                    return duplicateLast ? '' : `<text class="chart-label" x="${x(data.indexOf(d)).toFixed(1)}" y="${height - 10}" text-anchor="middle">${t('yearLabel')(d.year)}</text>`;
+                    return duplicateLast ? '' : `<text class="chart-label" style="font-size:${labelSize}px" x="${x(data.indexOf(d)).toFixed(1)}" y="${height - 10}" text-anchor="middle">${t('yearLabel')(d.year)}</text>`;
                 }).join('');
             const pointNodes = data
                 .filter((_, index) => index % pointEvery === 0 || index === data.length - 1)
@@ -1521,6 +1661,7 @@
             el.addEventListener('input', scheduleCalculation);
             el.addEventListener('change', scheduleCalculation);
         });
+        window.addEventListener('resize', scheduleChartResize);
         applyLanguage();
         calculate();
     </script>
