@@ -302,6 +302,10 @@
             gap: 16px;
             margin-bottom: 18px;
         }
+        .section-title-copy {
+            display: grid;
+            gap: 4px;
+        }
         .section-title h2 {
             margin: 0;
             font-size: 1rem;
@@ -314,6 +318,24 @@
             font-size: 0.86rem;
             line-height: 1.4;
             text-align: right;
+        }
+        .accordion-toggle {
+            display: none;
+            width: 44px;
+            min-height: 44px;
+            padding: 0;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: rgba(var(--tint), 0.06);
+            color: var(--text);
+        }
+        .accordion-toggle svg {
+            width: 18px;
+            height: 18px;
+            transition: transform 160ms ease;
+        }
+        .mobile-collapsible.is-open .accordion-toggle svg {
+            transform: rotate(180deg);
         }
         .field-grid {
             display: grid;
@@ -802,6 +824,9 @@
                 display: flex;
                 flex-direction: column;
             }
+            .sidebar {
+                display: contents;
+            }
             .result-column {
                 display: contents;
             }
@@ -809,16 +834,24 @@
                 order: 1;
                 width: 100%;
             }
-            .sidebar {
+            .settings-card {
                 order: 2;
                 width: 100%;
             }
-            .chart-panel {
+            .contributions-card {
                 order: 3;
                 width: 100%;
             }
-            .table-card {
+            .chart-panel {
                 order: 4;
+                width: 100%;
+            }
+            .table-card {
+                order: 5;
+                width: 100%;
+            }
+            .trust-strip {
+                order: 6;
                 width: 100%;
             }
             .toggle-group {
@@ -833,11 +866,27 @@
                 justify-content: space-between;
             }
             .section-title {
-                display: grid;
-                gap: 4px;
+                align-items: center;
+                margin-bottom: 0;
             }
             .section-title p {
                 text-align: left;
+            }
+            .accordion-toggle {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                flex: 0 0 auto;
+            }
+            .collapsible-body {
+                display: none;
+                padding-top: 18px;
+            }
+            .mobile-collapsible.is-open .collapsible-body {
+                display: block;
+            }
+            .mobile-collapsible.is-open .collapsible-body.field-grid {
+                display: grid;
             }
             .income-item {
                 grid-template-columns: 1fr 44px;
@@ -952,12 +1001,19 @@
         </header>
         <div class="main-container">
             <aside class="sidebar" aria-label="Parámetros de cálculo">
-                <section class="glass-card panel">
+                <section class="glass-card panel mobile-collapsible settings-card">
                     <div class="section-title">
-                        <h2>Configuración</h2>
-                        <p>Modelo anualizado</p>
+                        <div class="section-title-copy">
+                            <h2>Configuración</h2>
+                            <p>Modelo anualizado</p>
+                        </div>
+                        <button class="accordion-toggle" type="button" aria-expanded="false" aria-controls="settingsPanel" onclick="toggleMobilePanel(this)" aria-label="Mostrar configuración">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="m6 9 6 6 6-6"></path>
+                            </svg>
+                        </button>
                     </div>
-                    <div class="field-grid">
+                    <div id="settingsPanel" class="collapsible-body field-grid">
                         <div class="field">
                             <label for="initialCapital">Capital inicial</label>
                             <div class="input-shell has-prefix">
@@ -1007,43 +1063,52 @@
                         </div>
                     </div>
                 </section>
-                <section class="glass-card panel">
+                <section class="glass-card panel mobile-collapsible contributions-card">
                     <div class="section-title">
-                        <h2>Aportaciones</h2>
-                        <p>Flujos recurrentes</p>
+                        <div class="section-title-copy">
+                            <h2>Aportaciones</h2>
+                            <p>Flujos recurrentes</p>
+                        </div>
+                        <button class="accordion-toggle" type="button" aria-expanded="false" aria-controls="contributionsPanel" onclick="toggleMobilePanel(this)" aria-label="Mostrar aportaciones">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="m6 9 6 6 6-6"></path>
+                            </svg>
+                        </button>
                     </div>
-                    <div id="incomeContainer" class="income-list" aria-live="polite">
-                        <div class="income-item">
-                            <div class="input-shell has-prefix">
-                                <span class="prefix money-prefix">€</span>
-                                <input type="number" class="inc-amount" value="250" min="0" step="25" inputmode="decimal" aria-label="Importe de aportación recurrente">
+                    <div id="contributionsPanel" class="collapsible-body">
+                        <div id="incomeContainer" class="income-list" aria-live="polite">
+                            <div class="income-item">
+                                <div class="input-shell has-prefix">
+                                    <span class="prefix money-prefix">€</span>
+                                    <input type="number" class="inc-amount" value="250" min="0" step="25" inputmode="decimal" aria-label="Importe de aportación recurrente">
+                                </div>
+                                <select class="inc-freq" aria-label="Frecuencia de aportación recurrente">
+                                    <option value="52">Semanal</option>
+                                    <option value="12" selected>Mensual</option>
+                                    <option value="4">Trimestral</option>
+                                    <option value="2">Semestral</option>
+                                    <option value="1">Anual</option>
+                                </select>
+                                <button class="btn btn-danger" type="button" onclick="removeIncomeRow(this)" aria-label="Eliminar aportación">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true">
+                                        <path d="M6 6l12 12"></path>
+                                        <path d="M18 6 6 18"></path>
+                                    </svg>
+                                </button>
                             </div>
-                            <select class="inc-freq" aria-label="Frecuencia de aportación recurrente">
-                                <option value="52">Semanal</option>
-                                <option value="12" selected>Mensual</option>
-                                <option value="4">Trimestral</option>
-                                <option value="2">Semestral</option>
-                                <option value="1">Anual</option>
-                            </select>
-                            <button class="btn btn-danger" type="button" onclick="removeIncomeRow(this)" aria-label="Eliminar aportación">
+                        </div>
+                        <div class="action-stack">
+                            <button class="btn btn-secondary" type="button" onclick="addIncomeRow()">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true">
-                                    <path d="M6 6l12 12"></path>
-                                    <path d="M18 6 6 18"></path>
+                                    <path d="M12 5v14"></path>
+                                    <path d="M5 12h14"></path>
                                 </svg>
+                                Añadir flujo
+                            </button>
+                            <button class="btn btn-primary" type="button" onclick="calculate()">
+                                Actualizar proyección
                             </button>
                         </div>
-                    </div>
-                    <div class="action-stack">
-                        <button class="btn btn-secondary" type="button" onclick="addIncomeRow()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true">
-                                <path d="M12 5v14"></path>
-                                <path d="M5 12h14"></path>
-                            </svg>
-                            Añadir flujo
-                        </button>
-                        <button class="btn btn-primary" type="button" onclick="calculate()">
-                            Actualizar proyección
-                        </button>
                     </div>
                 </section>
                 <section class="trust-strip" aria-label="Notas de confianza">
@@ -1151,6 +1216,10 @@
                 calcParams: 'Parámetros de cálculo',
                 config: 'Configuración',
                 annualized: 'Modelo anualizado',
+                showConfig: 'Mostrar configuración',
+                hideConfig: 'Ocultar configuración',
+                showContributions: 'Mostrar aportaciones',
+                hideContributions: 'Ocultar aportaciones',
                 initialCapital: 'Capital inicial',
                 currency: 'Divisa',
                 annualRate: 'Interés anual estimado',
@@ -1229,6 +1298,10 @@
                 calcParams: 'Calculation parameters',
                 config: 'Settings',
                 annualized: 'Annualized model',
+                showConfig: 'Show settings',
+                hideConfig: 'Hide settings',
+                showContributions: 'Show contributions',
+                hideContributions: 'Hide contributions',
                 initialCapital: 'Initial capital',
                 currency: 'Currency',
                 annualRate: 'Estimated annual interest',
@@ -1325,6 +1398,20 @@
                 }
             }, 120);
         }
+        function updateMobilePanelLabels() {
+            const settingsButton = document.querySelector('.settings-card .accordion-toggle');
+            const contributionsButton = document.querySelector('.contributions-card .accordion-toggle');
+            const settingsOpen = document.querySelector('.settings-card').classList.contains('is-open');
+            const contributionsOpen = document.querySelector('.contributions-card').classList.contains('is-open');
+            settingsButton.setAttribute('aria-label', settingsOpen ? t('hideConfig') : t('showConfig'));
+            contributionsButton.setAttribute('aria-label', contributionsOpen ? t('hideContributions') : t('showContributions'));
+        }
+        function toggleMobilePanel(button) {
+            const panel = button.closest('.mobile-collapsible');
+            const isOpen = panel.classList.toggle('is-open');
+            button.setAttribute('aria-expanded', String(isOpen));
+            updateMobilePanelLabels();
+        }
         function optionMarkup(group, selectedValue) {
             return t('frequencies')[group]
                 .map(([value, label]) => `<option value="${value}"${value === selectedValue ? ' selected' : ''}>${label}</option>`)
@@ -1384,6 +1471,7 @@
             titles[0].querySelector('p').textContent = t('annualized');
             titles[1].querySelector('h2').textContent = t('contributions');
             titles[1].querySelector('p').textContent = t('recurrentFlows');
+            updateMobilePanelLabels();
             titles[2].querySelector('h2').textContent = t('chartTitle');
             document.getElementById('chartHint').textContent = t('chartHint');
             document.querySelector('.table-title-copy h2').textContent = t('annualBreakdown');
